@@ -10,5 +10,13 @@ package br.edu.ifnmg.estudocaso.entidade;
  * @author helder
  */
 public class PessoaFisica extends Cliente{
-    private double salario;        
+    private double salario;   
+    
+    public double getSalario(){
+        return this.salario;
+    }
+    
+    public void setSalario(double salario){
+        this.salario = salario;
+    }
 }

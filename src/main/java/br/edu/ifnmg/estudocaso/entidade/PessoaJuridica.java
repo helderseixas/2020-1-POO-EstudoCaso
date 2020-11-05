@@ -10,5 +10,18 @@ package br.edu.ifnmg.estudocaso.entidade;
  * @author helder
  */
 public class PessoaJuridica extends Cliente{
-    private char porte;    
+    public final static char MICROEMPRESA = 'M';
+    public final static char PEQUENO_PORTE = 'P';
+    public final static char MEDIO_PORTE = 'E';
+    public final static char GRANDE_PORTE = 'G';
+    
+    private char porte;
+    
+    public PessoaJuridica(char porte){
+        this.porte = porte;
+    }   
+    
+    public char getPorte(){
+        return this.porte;
+    }
 }

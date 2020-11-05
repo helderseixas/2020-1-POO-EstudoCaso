@@ -1,5 +1,7 @@
 package br.edu.ifnmg.estudocaso.entidade;
 
+import java.util.Date;
+
 public abstract class OperacaoFinanceira {
 	
     protected int codigo;
@@ -9,7 +11,7 @@ public abstract class OperacaoFinanceira {
         this.codigo = codigo;
     }
 	
-	public void setData(Date data){
+    public void setData(Date data){
         this.data = data;
     }
 }

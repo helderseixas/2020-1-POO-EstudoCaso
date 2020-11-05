@@ -7,4 +7,10 @@ package br.edu.ifnmg.estudocaso.entidade;
 public abstract class Conta {
     protected String numero;
     protected double saldo;
+    
+    protected Cliente cliente;
+    
+    public Conta(Cliente cliente){
+        this.cliente = cliente;        
+    }
 }
