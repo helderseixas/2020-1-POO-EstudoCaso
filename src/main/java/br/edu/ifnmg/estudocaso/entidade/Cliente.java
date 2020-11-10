@@ -10,8 +10,15 @@ package br.edu.ifnmg.estudocaso.entidade;
  * @author helder
  */
 public abstract class Cliente {
+    protected String codigo;
     protected String senha;
-    protected String  nome;   
+    protected String  nome;  
+    
+    public Cliente(String codigo, String nome, String senha){
+        this.codigo = codigo;
+        this.nome = nome;
+        this.senha = senha;
+    }
     
     public void imprimirNome(){
         System.out.println(this.nome);
@@ -19,5 +26,9 @@ public abstract class Cliente {
     
     public void setNome(String nome){
         this.nome = nome;
+    }
+    
+    public String getCodigo(){
+        return this.codigo;
     }
 }

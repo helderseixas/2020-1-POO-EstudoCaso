@@ -17,7 +17,8 @@ public class PessoaJuridica extends Cliente{
     
     private char porte;
     
-    public PessoaJuridica(char porte){
+    public PessoaJuridica(String codigo, String nome, String senha, char porte){
+        super(codigo, nome, senha);
         this.porte = porte;
     }   
     

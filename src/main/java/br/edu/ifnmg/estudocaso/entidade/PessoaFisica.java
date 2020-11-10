@@ -11,6 +11,11 @@ package br.edu.ifnmg.estudocaso.entidade;
  */
 public class PessoaFisica extends Cliente{
     private double salario;   
+
+    public PessoaFisica(String codigo, String nome, String senha, double salario) {
+        super(codigo, nome, senha);
+        this.salario = salario;
+    }
     
     public double getSalario(){
         return this.salario;

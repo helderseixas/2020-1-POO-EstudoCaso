@@ -6,8 +6,8 @@ package br.edu.ifnmg.estudocaso.entidade;
  */
 public class ContaCorrente extends Conta{
 
-    public ContaCorrente(Cliente cliente) {
-        super(cliente);
+    public ContaCorrente(String numero, Cliente cliente, double saldo) {
+        super(numero, cliente, saldo);
     }
     
     public double calcularLimite(){
