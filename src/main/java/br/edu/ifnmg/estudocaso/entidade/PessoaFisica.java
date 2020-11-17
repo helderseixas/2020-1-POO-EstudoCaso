@@ -24,4 +24,11 @@ public class PessoaFisica extends Cliente{
     public void setSalario(double salario){
         this.salario = salario;
     }
+
+    @Override
+    public String getDescricaoCliente() {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("Nome: ").append(this.nome).append(" - Salário: ").append(this.salario);
+        return builder.toString();
+    }
 }

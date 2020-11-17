@@ -15,24 +15,37 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author helder
  */
-public class Main {
-    
-    private static ArrayList<Cliente> clientes = new ArrayList<>();
-    private static ArrayList<Conta> contas = new ArrayList<>();
+public class Main {    
+    private static Map<String, Cliente> clientes = new HashMap<>();
+    private static List<Conta> contas = new ArrayList<>();
 
-    public static void main(String[] args) throws IOException {                       
+    public static void main(String[] args) throws IOException {
+        Date inicio = new Date();
+        System.out.printf("\nInício da execução: %s\n", inicio.toString());
+        
         carregarDados();
         imprimirTotalDepositado();
+        exibirContasOrdenadasPeloNomeCliente();
+        
+        Date fim = new Date();
+        System.out.printf("\nFim da execução: %s\n", fim.toString());
+        long tempo = fim.getTime() - inicio.getTime();
+        double tempoMinutos = tempo/1000.0/60.0;
+        System.out.printf("\nTempo: %f minutos", tempoMinutos);
     }
 
     private static void carregarDados() throws IOException {            
         carregarDadosClientesPessoaFisica();
-        carregarDadosClientesPessoaJuridica();
+        carregarDadosClientesPessoaJuridica();        
         carregarDadosContaCorrente();  
         carregarDadosContaPoupanca();
     }
@@ -57,7 +70,7 @@ public class Main {
             String senha = colunas[2];
             double salario =  Double.parseDouble(colunas[3]);
             PessoaFisica pessoaFisica = new PessoaFisica(codigo, nome, senha, salario); 
-            clientes.add(pessoaFisica);            
+            clientes.put(codigo, pessoaFisica);            
         }                            
         System.out.println("Dados de clientes pessoa física carregados.");
     }
@@ -82,7 +95,7 @@ public class Main {
             String senha = colunas[2];
             char porte =  colunas[3].toCharArray()[0];
             PessoaJuridica pessoaJuridica = new PessoaJuridica(codigo, nome, senha, porte); 
-            clientes.add(pessoaJuridica);            
+            clientes.put(codigo, pessoaJuridica);            
         }                  
         
         System.out.println("Dados de clientes pessoa jurídica carregados.");
@@ -150,11 +163,16 @@ public class Main {
     }
 
     private static Cliente recuperarCliente(String codigoCliente) {
-        for (Cliente cliente : clientes) {
-            if (cliente.getCodigo().equals(codigoCliente)){
-                return cliente;
-            }
-        }
-        return null;
-    }    
+//        for (Cliente cliente : clientes) {
+//            if (cliente.getCodigo().equals(codigoCliente)){
+//                return cliente;
+//            }
+//        }
+//        return null;
+        return clientes.get(codigoCliente);
+    }
+
+    private static void exibirContasOrdenadasPeloNomeCliente() {
+        //TO DO: imprimir nome do cliente, número da conta e saldo de forma ordenada pelo nome do cliente.
+    }
 }
