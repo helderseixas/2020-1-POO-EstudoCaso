@@ -15,6 +15,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -172,7 +174,27 @@ public class Main {
         return clientes.get(codigoCliente);
     }
 
-    private static void exibirContasOrdenadasPeloNomeCliente() {
-        //TO DO: imprimir nome do cliente, número da conta e saldo de forma ordenada pelo nome do cliente.
-    }
+    private static void exibirContasOrdenadasPeloNomeCliente() {                
+        Comparator<Conta> comparadorContas = new Comparator<>() {
+            @Override
+            public int compare(Conta conta1, Conta conta2) {
+                int diferenca = conta1.getCliente().getNome().compareTo(conta2.getCliente().getNome());
+                if(diferenca != 0){
+                    return diferenca;
+                }else{
+                    diferenca = (int) (conta1.getSaldo() - conta2.getSaldo());
+                    return diferenca * -1;
+                }
+            }
+        };
+        
+        Collections.sort(contas, comparadorContas);
+        
+        for(Conta conta : contas){
+            System.out.printf("\nCliente: %s - Número da conta: %s - Saldo: %f", 
+                    conta.getCliente().getNome(), 
+                    conta.getNumero(),
+                    conta.getSaldo());            
+        }
+    }        
 }

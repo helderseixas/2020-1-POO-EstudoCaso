@@ -34,7 +34,11 @@ public abstract class Cliente {
     
     public String getCodigo(){
         return this.codigo;
-    }            
+    }    
+    
+    public String getNome(){
+        return this.nome;
+    }
 
     @Override
     public int hashCode() {
