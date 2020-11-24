@@ -68,8 +68,4 @@ public abstract class Cliente {
     public String getSenha() {
         return this.senha;
     }
-
-    public String getNome() {
-        return this.nome;
-    }
 }
