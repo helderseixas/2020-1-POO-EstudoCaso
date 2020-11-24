@@ -25,4 +25,11 @@ public class PessoaJuridica extends Cliente{
     public char getPorte(){
         return this.porte;
     }
+
+    @Override
+    public String getDescricaoCliente() {
+        StringBuilder builder =  new StringBuilder();
+        builder.append("Nome: ").append(this.nome).append(" - Código do porte: ").append(this.porte);
+        return builder.toString();
+    }
 }

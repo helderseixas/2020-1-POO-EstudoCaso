@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.ifnmg.estudocaso.entidade;
+package br.edu.ifnmg.estudocaso;
 
 import br.edu.ifnmg.estudocaso.entidade.Cliente;
 import br.edu.ifnmg.estudocaso.entidade.Conta;
@@ -15,23 +15,33 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
  * @author helder
  */
 public class Main {
-    
-    // private static ArrayList<Cliente> clientes = new ArrayList<>();
-    // private static ArrayList<Conta> contas = new ArrayList<>();
+    // private static Map<String, Cliente> clientes = new HashMap<>();
+    // private static List<Conta> contas = new ArrayList<>();
     private static HashMap<String, Cliente> codigo_Cliente = new HashMap<>();
     private static HashMap<String, Conta> codigo_Conta = new HashMap<>();
-
 
     public static void main(String[] args) throws IOException {                       
         carregarDados();
         imprimirTotalDepositado();
+        exibirContasOrdenadasPeloNomeCliente();
 
+        Date fim = new Date();
+        System.out.printf("\nFim da execução: %s\n", fim.toString());
+        long tempo = fim.getTime() - inicio.getTime();
+        double tempoMinutos = tempo/1000.0/60.0;
+        System.out.printf("\nTempo: %f minutos", tempoMinutos);
     }
 
     private static void carregarDados() throws IOException {            
@@ -87,8 +97,7 @@ public class Main {
             String senha = colunas[2];
             char porte =  colunas[3].toCharArray()[0];
             PessoaJuridica pessoaJuridica = new PessoaJuridica(codigo, nome, senha, porte); 
-            // clientes.add(pessoaJuridica);
-            codigo_Cliente.put(codigo, pessoaJuridica);
+            clientes.put(codigo, pessoaJuridica);
         }                  
         
         System.out.println("Dados de clientes pessoa jurídica carregados.");
@@ -119,10 +128,8 @@ public class Main {
             contaCorrente.autenticar(codigo_Conta);
 
         }      
-
+        
         System.out.println("Dados de conta corrente carregados.");
-
-
     }
 
     private static void carregarDadosContaPoupanca() throws IOException {
@@ -145,7 +152,6 @@ public class Main {
             double saldo = Double.parseDouble(colunas[2]);            
             int diaAniversario = Integer.parseInt(colunas[3]);
             Cliente cliente = recuperarCliente(codigoCliente);
-            // Cliente cliente = recuperarCliente(codigoCliente);
             ContaPoupanca contaPoupanca = new ContaPoupanca(numero, cliente, saldo, diaAniversario);
             // contas.add(contaPoupanca);
             codigo_Conta.put(numero, contaPoupanca);
@@ -156,29 +162,43 @@ public class Main {
 
     private static void imprimirTotalDepositado() {
         double total = 0.0;
-        /*
         for(Conta conta : contas){
-            total += conta.getSaldo();
-        }
-
-         */
-        /* Display content using Iterator*/
-        Set set = codigo_Conta.entrySet();
-        Iterator iterator = set.iterator();
-        while(iterator.hasNext()) {
-
-            // System.out.print("Chave: "+ mentry.getKey());
-            // System.out.println(mentry.getValue());
-            // System.out.printf("%nSaldo: %.2f", conta.getSaldo());
-
-            Map.Entry mentry = (Map.Entry)iterator.next();
-            Conta conta = (Conta) mentry.getValue();
             total += conta.getSaldo();
         }
         System.out.printf("\nTotal depositado: R$ %f", total);
     }
 
     private static Cliente recuperarCliente(String codigoCliente) {
-        return codigo_Cliente.get(codigoCliente);
-    }    
+//        for (Cliente cliente : clientes) {
+//            if (cliente.getCodigo().equals(codigoCliente)){
+//                return cliente;
+//            }
+//        }
+//        return null;
+        return clientes.get(codigoCliente);
+    }
+
+    private static void exibirContasOrdenadasPeloNomeCliente() {
+        Comparator<Conta> comparadorContas = new Comparator<>() {
+            @Override
+            public int compare(Conta conta1, Conta conta2) {
+                int diferenca = conta1.getCliente().getNome().compareTo(conta2.getCliente().getNome());
+                if(diferenca != 0){
+                    return diferenca;
+                }else{
+                    diferenca = (int) (conta1.getSaldo() - conta2.getSaldo());
+                    return diferenca * -1;
+                }
+            }
+        };
+
+        Collections.sort(contas, comparadorContas);
+
+        for(Conta conta : contas){
+            System.out.printf("\nCliente: %s - Número da conta: %s - Saldo: %f",
+                    conta.getCliente().getNome(),
+                    conta.getNumero(),
+                    conta.getSaldo());
+        }
+    }
 }
