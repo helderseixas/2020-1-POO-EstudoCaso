@@ -32,7 +32,10 @@ public class Main {
     private static HashMap<String, Cliente> codigo_Cliente = new HashMap<>();
     private static HashMap<String, Conta> codigo_Conta = new HashMap<>();
 
-    public static void main(String[] args) throws IOException {                       
+    public static void main(String[] args) throws IOException {
+        Date inicio = new Date();
+        System.out.printf("\nInício da execução: %s\n", inicio.toString());
+
         carregarDados();
         imprimirTotalDepositado();
         exibirContasOrdenadasPeloNomeCliente();
@@ -97,7 +100,7 @@ public class Main {
             String senha = colunas[2];
             char porte =  colunas[3].toCharArray()[0];
             PessoaJuridica pessoaJuridica = new PessoaJuridica(codigo, nome, senha, porte); 
-            clientes.put(codigo, pessoaJuridica);
+            codigo_Cliente.put(codigo, pessoaJuridica);
         }                  
         
         System.out.println("Dados de clientes pessoa jurídica carregados.");
@@ -162,7 +165,7 @@ public class Main {
 
     private static void imprimirTotalDepositado() {
         double total = 0.0;
-        for(Conta conta : contas){
+        for(Conta conta : codigo_Conta.values()){
             total += conta.getSaldo();
         }
         System.out.printf("\nTotal depositado: R$ %f", total);
@@ -175,7 +178,7 @@ public class Main {
 //            }
 //        }
 //        return null;
-        return clientes.get(codigoCliente);
+        return codigo_Cliente.get(codigoCliente);
     }
 
     private static void exibirContasOrdenadasPeloNomeCliente() {
@@ -192,9 +195,11 @@ public class Main {
             }
         };
 
-        Collections.sort(contas, comparadorContas);
+        Collection<Conta> colecaoContas = codigo_Conta.values();
+        List<Conta> listaContas = new ArrayList<>(colecaoContas);
+        Collections.sort(listaContas, comparadorContas);
 
-        for(Conta conta : contas){
+        for(Conta conta : listaContas){
             System.out.printf("\nCliente: %s - Número da conta: %s - Saldo: %f",
                     conta.getCliente().getNome(),
                     conta.getNumero(),
