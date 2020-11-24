@@ -12,7 +12,7 @@ package br.edu.ifnmg.estudocaso.entidade;
 public abstract class Cliente {
     protected String codigo;
     protected String senha;
-    protected String  nome;  
+    protected String nome;
     
     public Cliente(String codigo, String nome, String senha){
         this.codigo = codigo;
@@ -30,5 +30,13 @@ public abstract class Cliente {
     
     public String getCodigo(){
         return this.codigo;
+    }
+
+    public String getSenha() {
+        return this.senha;
+    }
+
+    public String getNome() {
+        return this.nome;
     }
 }
