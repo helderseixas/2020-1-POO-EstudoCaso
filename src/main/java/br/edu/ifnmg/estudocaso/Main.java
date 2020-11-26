@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -36,8 +37,32 @@ public class Main {
         System.out.printf("\nInício da execução: %s\n", inicio.toString());
 
         carregarDados();
-        imprimirTotalDepositado();
-        exibirContasOrdenadasPeloNomeCliente();
+//        imprimirTotalDepositado();
+//        exibirContasOrdenadasPeloNomeCliente();        
+        
+        Conta conta = autenticarConta();
+        
+        Scanner scanner = new Scanner(System.in);
+        int operacao = 0;
+        do{
+            System.out.println("\n\n***Menu***");
+            System.out.println("Operação: ");
+            System.out.println("1 - Transferência");
+            System.out.println("2 - Empréstimo");
+            System.out.println("3 - Trocar conta autenticada");
+            System.out.println("4 - Sair");
+            System.out.println("Informe a operação: ");
+            operacao = scanner.nextInt();
+            
+            if(operacao == 1){
+                //TODO: implementar transferencia
+            }else if(operacao == 2){
+                //TODO: implementar emprestimo
+            }else if(operacao ==  3){
+                conta = autenticarConta();
+            }
+        }while(operacao != 4);
+        
 
         Date fim = new Date();
         System.out.printf("\nFim da execução: %s\n", fim.toString());
@@ -194,4 +219,44 @@ public class Main {
                     conta.getSaldo());
         }
     }
+
+    private static Conta autenticarConta() {
+        // Ler os dados a partir do teclado
+        Scanner scanner = new Scanner(System.in);        
+
+        Conta contaPesquisada = null;
+        
+        do{        
+            System.out.println("\nDigite o nº da conta:");
+            String numeroPesquisado = "1";
+            //numeroPesquisado = scanner.next();      
+
+            System.out.println("Digite a senha:");
+            String senhaPesquisada = "6838";
+            //senhaPesquisada = scanner.next();
+
+            // Pesquisa no HashMap de Contas pelo numero pesquisado.
+            if ((mapaContas.get(numeroPesquisado) != null)) {
+                contaPesquisada = (Conta) mapaContas.get(numeroPesquisado);
+
+                boolean autenticadoSucesso = 
+                        contaPesquisada.autenticar(senhaPesquisada);
+
+                if(autenticadoSucesso){
+                    System.out.printf("%s (%s) autenticado com sucesso!", 
+                            contaPesquisada.getCliente().getNome(), 
+                            contaPesquisada.getNumero());
+                }else{
+                    System.out.printf("%s (%s) não autenticado! Senha incorreta", 
+                            contaPesquisada.getCliente().getNome(), 
+                            contaPesquisada.getNumero());
+                }
+            }else {
+                System.out.println("Conta não encontrada!");
+            }
+        }while (contaPesquisada == null);
+        
+        return contaPesquisada;
+    }
+    
 }
