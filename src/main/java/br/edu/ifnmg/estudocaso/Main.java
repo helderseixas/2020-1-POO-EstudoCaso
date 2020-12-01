@@ -50,18 +50,33 @@ public class Main {
             System.out.println("1 - Transferência");
             System.out.println("2 - Empréstimo");
             System.out.println("3 - Trocar conta autenticada");
-            System.out.println("4 - Sair");
+            System.out.println("4 - Consultar saldo");
+            System.out.println("5 - Sair");
             System.out.println("Informe a operação: ");
-            operacao = scanner.nextInt();
+            operacao = Integer.parseInt(scanner.nextLine());
             
             if(operacao == 1){
                 //TODO: implementar transferencia
             }else if(operacao == 2){
-                //TODO: implementar emprestimo
+                if(conta instanceof ContaCorrente){
+                    ContaCorrente contaCorrente = (ContaCorrente) conta;
+                    
+                    System.out.println("Valor do empréstimo: ");
+                    double valorEmprestimo = Double.parseDouble(scanner.nextLine());
+                    System.out.println("Número de parcelas: ");
+                    int numeroParcelas = Integer.parseInt(scanner.nextLine());
+                    
+                    contaCorrente.solicitarEmprestimo(valorEmprestimo, numeroParcelas);
+                    System.out.println("Empréstimo realizado com sucesso!");
+                }else{
+                    System.out.println("Conta poupança não pode solicitar empréstimo!");
+                }
             }else if(operacao ==  3){
                 conta = autenticarConta();
+            }else if(operacao == 4){
+                System.out.printf("Saldo: %f\n", conta.getSaldo());
             }
-        }while(operacao != 4);
+        }while(operacao != 5);
         
 
         Date fim = new Date();
@@ -228,12 +243,12 @@ public class Main {
         
         do{        
             System.out.println("\nDigite o nº da conta:");
-            String numeroPesquisado = "1";
-            //numeroPesquisado = scanner.next();      
+            //String numeroPesquisado = "1";
+            String numeroPesquisado = scanner.next();      
 
             System.out.println("Digite a senha:");
-            String senhaPesquisada = "6838";
-            //senhaPesquisada = scanner.next();
+            //String senhaPesquisada = "6838";
+            String senhaPesquisada = scanner.next();
 
             // Pesquisa no HashMap de Contas pelo numero pesquisado.
             if ((mapaContas.get(numeroPesquisado) != null)) {

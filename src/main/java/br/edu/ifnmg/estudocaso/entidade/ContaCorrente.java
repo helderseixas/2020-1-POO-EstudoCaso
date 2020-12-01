@@ -27,8 +27,8 @@ public class ContaCorrente extends Conta{
             }            
         }        
     }
-//
-//    public void solicitarEmprestimo(){
-//    	
-//    }       
+
+    public void solicitarEmprestimo(double valor, int numeroParcelasPagamento){
+        this.saldo += valor;                            	
+    }
 }
