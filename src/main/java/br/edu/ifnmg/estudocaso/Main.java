@@ -9,6 +9,7 @@ import br.edu.ifnmg.estudocaso.entidade.Cliente;
 import br.edu.ifnmg.estudocaso.entidade.Conta;
 import br.edu.ifnmg.estudocaso.entidade.ContaCorrente;
 import br.edu.ifnmg.estudocaso.entidade.ContaPoupanca;
+import br.edu.ifnmg.estudocaso.entidade.Emprestimo;
 import br.edu.ifnmg.estudocaso.entidade.PessoaFisica;
 import br.edu.ifnmg.estudocaso.entidade.PessoaJuridica;
 import java.io.BufferedReader;
@@ -66,8 +67,10 @@ public class Main {
                     System.out.println("Número de parcelas: ");
                     int numeroParcelas = Integer.parseInt(scanner.nextLine());
                     
-                    contaCorrente.solicitarEmprestimo(valorEmprestimo, numeroParcelas);
+                    Emprestimo emprestimo = 
+                            contaCorrente.solicitarEmprestimo(valorEmprestimo, numeroParcelas);                    
                     System.out.println("Empréstimo realizado com sucesso!");
+                    System.out.printf("\nTaxa de juros: %f%% ao mês.", emprestimo.getJurosEmPorcentagem());
                 }else{
                     System.out.println("Conta poupança não pode solicitar empréstimo!");
                 }
