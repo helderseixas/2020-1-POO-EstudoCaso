@@ -15,11 +15,13 @@ public abstract class Cliente {
     protected String codigo;
     protected String senha;
     protected String nome;
+    protected int numeroEmprestimos;
     
     public Cliente(String codigo, String nome, String senha){
         this.codigo = codigo;
         this.nome = nome;
         this.senha = senha;
+        this.numeroEmprestimos = 0;
     }
     
     public abstract String getDescricaoCliente();
@@ -67,5 +69,17 @@ public abstract class Cliente {
 
     public String getSenha() {
         return this.senha;
+    }
+    
+    public boolean habilitadoParaNovoEmprestimo(){
+        if(this.numeroEmprestimos <= 1){
+            return true;
+        } else if(this instanceof PessoaJuridica){
+            PessoaJuridica pessoaJuridica = (PessoaJuridica) this;
+            if(pessoaJuridica.getPorte() == PessoaJuridica.GRANDE_PORTE){
+                return true;
+            }
+        }
+        return false;        
     }
 }

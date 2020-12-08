@@ -29,8 +29,18 @@ public class ContaCorrente extends Conta{
     }
 
     public Emprestimo solicitarEmprestimo(double valor, int numeroParcelasPagamento){
-        this.saldo += valor;
-        Emprestimo emprestimo = new Emprestimo(this.cliente);
-        return emprestimo;
+        if(valor <= 2 * this.calcularLimite()){
+            if(cliente.habilitadoParaNovoEmprestimo() == true){
+                this.saldo += valor;
+                Emprestimo emprestimo = new Emprestimo(this.cliente);
+                return emprestimo;
+            }else{
+                RuntimeException clienteNaoHabilitadoException = 
+                        new RuntimeException("Cliente não habilitado para novos empréstimos!");
+                throw clienteNaoHabilitadoException;
+            }
+        }else{
+            throw new RuntimeException("Valor do empréstimo é inválido!");
+        }
     }
 }

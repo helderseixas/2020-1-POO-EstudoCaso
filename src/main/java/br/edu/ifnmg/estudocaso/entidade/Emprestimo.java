@@ -19,8 +19,8 @@ public class Emprestimo extends OperacaoFinanceira{
     private double juros;        
     private double valorParcela;
     
-    public Emprestimo(Cliente cliente){
-        this.juros = TAXA_JUROS_PADRAO;
+    public Emprestimo(Cliente cliente){        
+        this.juros = TAXA_JUROS_PADRAO;        
         
         if(cliente instanceof PessoaFisica){
             PessoaFisica clientePessoaFisica = (PessoaFisica) cliente;
@@ -39,6 +39,10 @@ public class Emprestimo extends OperacaoFinanceira{
                 this.juros = TAXA_JUROS_EMPRESA_PEQUENO_PORTE;
             }
         }
+        if(cliente.numeroEmprestimos >= 1){
+            this.juros = this.juros * 2;
+        }
+        cliente.numeroEmprestimos++;
     }
 
     public double getJuros() {

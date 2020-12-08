@@ -13,6 +13,7 @@ import br.edu.ifnmg.estudocaso.entidade.Emprestimo;
 import br.edu.ifnmg.estudocaso.entidade.PessoaFisica;
 import br.edu.ifnmg.estudocaso.entidade.PessoaJuridica;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,7 +53,8 @@ public class Main {
             System.out.println("2 - Empréstimo");
             System.out.println("3 - Trocar conta autenticada");
             System.out.println("4 - Consultar saldo");
-            System.out.println("5 - Sair");
+            System.out.println("5 - Consultar limite");
+            System.out.println("6 - Sair");
             System.out.println("Informe a operação: ");
             operacao = Integer.parseInt(scanner.nextLine());
             
@@ -67,10 +69,16 @@ public class Main {
                     System.out.println("Número de parcelas: ");
                     int numeroParcelas = Integer.parseInt(scanner.nextLine());
                     
-                    Emprestimo emprestimo = 
+                    try{
+                        Emprestimo emprestimo = 
                             contaCorrente.solicitarEmprestimo(valorEmprestimo, numeroParcelas);                    
-                    System.out.println("Empréstimo realizado com sucesso!");
-                    System.out.printf("\nTaxa de juros: %f%% ao mês.", emprestimo.getJurosEmPorcentagem());
+                        System.out.println("Empréstimo realizado com sucesso!");
+                        System.out.printf("\nTaxa de juros: %f%% ao mês.", emprestimo.getJurosEmPorcentagem());
+                    }catch(RuntimeException runtimeException){
+                        System.out.println("Empréstimo não concedido!");
+                        System.out.println(runtimeException.getMessage());
+                    }
+                    
                 }else{
                     System.out.println("Conta poupança não pode solicitar empréstimo!");
                 }
@@ -78,8 +86,14 @@ public class Main {
                 conta = autenticarConta();
             }else if(operacao == 4){
                 System.out.printf("Saldo: %f\n", conta.getSaldo());
+            }else if(operacao == 5){
+                if(conta instanceof ContaCorrente){
+                    System.out.printf("Limite: %f",((ContaCorrente)conta).calcularLimite());
+                }else{
+                    System.out.println("Esta conta não possui limite.");
+                }
             }
-        }while(operacao != 5);
+        }while(operacao != 6);
         
 
         Date fim = new Date();
