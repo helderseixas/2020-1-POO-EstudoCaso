@@ -28,7 +28,7 @@ public class PessoaFisica extends Cliente{
     @Override
     public String getDescricaoCliente() {
         StringBuilder builder =  new StringBuilder();
-        builder.append("Nome: ").append(this.nome).append(" - Salário: ").append(this.salario);
+        builder.append("Nome: ").append(this.getNome()).append(" - Salário: ").append(this.salario);
         return builder.toString();
     }
 }

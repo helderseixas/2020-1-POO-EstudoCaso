@@ -12,10 +12,10 @@ import java.util.Objects;
  * @author helder
  */
 public abstract class Cliente {
-    protected String codigo;
-    protected String senha;
-    protected String nome;
-    protected int numeroEmprestimos;
+    private String codigo;
+    private String senha;
+    private String nome;    
+    private int numeroEmprestimos;
     
     public Cliente(String codigo, String nome, String senha){
         this.codigo = codigo;
@@ -25,6 +25,10 @@ public abstract class Cliente {
     }
     
     public abstract String getDescricaoCliente();
+    
+    public void incrementarNumeroEmprestimos(){
+        this.numeroEmprestimos++;
+    }
     
     public void imprimirNome(){
         System.out.println(this.nome);
@@ -81,5 +85,9 @@ public abstract class Cliente {
             }
         }
         return false;        
+    }
+
+    public int getNumeroEmprestimos() {
+        return this.numeroEmprestimos;
     }
 }

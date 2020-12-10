@@ -18,10 +18,33 @@ public class Emprestimo extends OperacaoFinanceira{
     private int numeroParcelas;        
     private double juros;        
     private double valorParcela;
+    private ContaCorrente contaCorrente;
     
-    public Emprestimo(Cliente cliente){        
+    public Emprestimo(ContaCorrente contaCorrente, double valor, int numeroParcelas){        
+        this.contaCorrente = contaCorrente;
+        this.valor = valor;
+        this.numeroParcelas = numeroParcelas;
         this.juros = TAXA_JUROS_PADRAO;        
         
+        this.verificarValor();
+        this.verificarCliente();
+        this.verificarNumeroParcelas();                
+        this.ajustarValorJuros();      
+        this.ajustarValorParcela();        
+        this.contaCorrente.getCliente().incrementarNumeroEmprestimos();
+        this.contaCorrente.depositar(valor);
+    }
+
+    private void ajustarValorParcela() throws RuntimeException {
+        double valorComJuros = this.valor + (this.valor * this.juros);
+        this.valorParcela = valorComJuros / this.numeroParcelas;
+        if(this.valorParcela < 100){
+            throw new RuntimeException("Valor mínimo da parcela é inválido!");
+        }
+    }
+
+    private void ajustarValorJuros() {
+        Cliente cliente = this.contaCorrente.getCliente();
         if(cliente instanceof PessoaFisica){
             PessoaFisica clientePessoaFisica = (PessoaFisica) cliente;
             if(clientePessoaFisica.getSalario() > NIVEL_SALARIO_ALTO){
@@ -39,10 +62,35 @@ public class Emprestimo extends OperacaoFinanceira{
                 this.juros = TAXA_JUROS_EMPRESA_PEQUENO_PORTE;
             }
         }
-        if(cliente.numeroEmprestimos >= 1){
+        if(cliente.getNumeroEmprestimos() >= 1){
             this.juros = this.juros * 2;
         }
-        cliente.numeroEmprestimos++;
+    }
+    
+    private void verificarValor(){
+        if(this.valor > 2 * this.contaCorrente.calcularLimite()){
+           throw new RuntimeException("Valor do empréstimo é inválido!"); 
+        }
+    }
+    
+    private void verificarCliente(){
+        if(this.contaCorrente.getCliente().habilitadoParaNovoEmprestimo() == false){
+            RuntimeException clienteNaoHabilitadoException = 
+                        new RuntimeException("Cliente não habilitado para novos empréstimos!");
+            throw clienteNaoHabilitadoException;            
+        }
+    }
+    
+    private void verificarNumeroParcelas(){        
+        if(this.numeroParcelas  > 24){
+            throw new RuntimeException("Número de parcelas é inválido!"); 
+        }else if(this.numeroParcelas > 12 && 
+                this.contaCorrente.getCliente() instanceof PessoaFisica){
+            PessoaFisica pessoaFisica = (PessoaFisica) this.contaCorrente.getCliente();
+            if(pessoaFisica.getSalario() <= 10000){
+                throw new RuntimeException("Número de parcelas é inválido!");     
+            }
+        }       
     }
 
     public double getJuros() {
@@ -52,6 +100,17 @@ public class Emprestimo extends OperacaoFinanceira{
     public double getJurosEmPorcentagem(){
         return this.juros * 100;
     }
-    
-	
+
+    public double getValor() {
+        return valor;
+    }
+
+    public int getNumeroParcelas() {
+        return numeroParcelas;
+    }
+
+    public double getValorParcela() {
+        return valorParcela;
+    }
+    	
 }

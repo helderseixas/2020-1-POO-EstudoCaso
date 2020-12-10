@@ -71,9 +71,8 @@ public class Main {
                     
                     try{
                         Emprestimo emprestimo = 
-                            contaCorrente.solicitarEmprestimo(valorEmprestimo, numeroParcelas);                    
-                        System.out.println("Empréstimo realizado com sucesso!");
-                        System.out.printf("\nTaxa de juros: %f%% ao mês.", emprestimo.getJurosEmPorcentagem());
+                            contaCorrente.solicitarEmprestimo(valorEmprestimo, numeroParcelas);                                                        
+                        imprimirMensagemEmprestimoComSucesso(emprestimo);
                     }catch(RuntimeException runtimeException){
                         System.out.println("Empréstimo não concedido!");
                         System.out.println(runtimeException.getMessage());
@@ -101,6 +100,15 @@ public class Main {
         long tempo = fim.getTime() - inicio.getTime();
         double tempoMinutos = tempo / 1000.0 / 60.0;
         System.out.printf("\nTempo: %f minutos", tempoMinutos);
+    }
+
+    private static void imprimirMensagemEmprestimoComSucesso(Emprestimo emprestimo) {
+        System.out.println("Empréstimo realizado com sucesso!");
+        System.out.printf("\nTaxa de juros: %f%% \nValor: R$ %f \nNúmero de parcelas: %d \nValor da parcela: %f", 
+                emprestimo.getJurosEmPorcentagem(),
+                emprestimo.getValor(),
+                emprestimo.getNumeroParcelas(),
+                emprestimo.getValorParcela());
     }
 
     private static void carregarDados() throws IOException {

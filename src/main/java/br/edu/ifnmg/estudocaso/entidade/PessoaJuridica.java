@@ -29,7 +29,7 @@ public class PessoaJuridica extends Cliente{
     @Override
     public String getDescricaoCliente() {
         StringBuilder builder =  new StringBuilder();
-        builder.append("Nome: ").append(this.nome).append(" - Código do porte: ").append(this.porte);
+        builder.append("Nome: ").append(this.getNome()).append(" - Código do porte: ").append(this.porte);
         return builder.toString();
     }
 }
