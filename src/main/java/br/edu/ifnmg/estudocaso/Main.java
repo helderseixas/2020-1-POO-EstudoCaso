@@ -12,6 +12,8 @@ import br.edu.ifnmg.estudocaso.entidade.ContaPoupanca;
 import br.edu.ifnmg.estudocaso.entidade.Emprestimo;
 import br.edu.ifnmg.estudocaso.entidade.PessoaFisica;
 import br.edu.ifnmg.estudocaso.entidade.PessoaJuridica;
+import br.edu.ifnmg.estudocaso.exception.NegocioException;
+import br.edu.ifnmg.estudocaso.exception.NumeroParcelasException;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -73,11 +75,12 @@ public class Main {
                         Emprestimo emprestimo = 
                             contaCorrente.solicitarEmprestimo(valorEmprestimo, numeroParcelas);                                                        
                         imprimirMensagemEmprestimoComSucesso(emprestimo);
-                    }catch(RuntimeException runtimeException){
+                    }catch(NumeroParcelasException e){
+                        System.out.println("Empréstimo não autorizado. O número de parcelas deve ser no mínimo 1 e no máximo 24.");
+                    }catch(NegocioException e){
                         System.out.println("Empréstimo não concedido!");
-                        System.out.println(runtimeException.getMessage());
-                    }
-                    
+                        System.out.println(e.getMessage());
+                    }                    
                 }else{
                     System.out.println("Conta poupança não pode solicitar empréstimo!");
                 }

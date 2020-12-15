@@ -1,5 +1,8 @@
 package br.edu.ifnmg.estudocaso.entidade;
 
+import br.edu.ifnmg.estudocaso.exception.NegocioException;
+import br.edu.ifnmg.estudocaso.exception.NumeroParcelasException;
+
 public class Emprestimo extends OperacaoFinanceira{
 
     private static final double TAXA_JUROS_PADRAO = 0.1;
@@ -20,11 +23,13 @@ public class Emprestimo extends OperacaoFinanceira{
     private double valorParcela;
     private ContaCorrente contaCorrente;
     
-    public Emprestimo(ContaCorrente contaCorrente, double valor, int numeroParcelas){        
+    public Emprestimo(ContaCorrente contaCorrente, double valor, int numeroParcelas){         
         this.contaCorrente = contaCorrente;
         this.valor = valor;
         this.numeroParcelas = numeroParcelas;
-        this.juros = TAXA_JUROS_PADRAO;        
+        this.juros = TAXA_JUROS_PADRAO;
+
+        
         
         this.verificarValor();
         this.verificarCliente();
@@ -39,7 +44,7 @@ public class Emprestimo extends OperacaoFinanceira{
         double valorComJuros = this.valor + (this.valor * this.juros);
         this.valorParcela = valorComJuros / this.numeroParcelas;
         if(this.valorParcela < 100){
-            throw new RuntimeException("Valor mínimo da parcela é inválido!");
+            throw new NegocioException("Valor mínimo da parcela é inválido!");
         }
     }
 
@@ -69,26 +74,26 @@ public class Emprestimo extends OperacaoFinanceira{
     
     private void verificarValor(){
         if(this.valor > 2 * this.contaCorrente.calcularLimite()){
-           throw new RuntimeException("Valor do empréstimo é inválido!"); 
+           throw new NegocioException("Valor do empréstimo é inválido!"); 
         }
     }
     
     private void verificarCliente(){
         if(this.contaCorrente.getCliente().habilitadoParaNovoEmprestimo() == false){
             RuntimeException clienteNaoHabilitadoException = 
-                        new RuntimeException("Cliente não habilitado para novos empréstimos!");
+                        new NegocioException("Cliente não habilitado para novos empréstimos!");
             throw clienteNaoHabilitadoException;            
         }
     }
     
     private void verificarNumeroParcelas(){        
-        if(this.numeroParcelas  > 24){
-            throw new RuntimeException("Número de parcelas é inválido!"); 
+        if(this.numeroParcelas < 1 || this.numeroParcelas  > 24){
+            throw new NumeroParcelasException(); 
         }else if(this.numeroParcelas > 12 && 
                 this.contaCorrente.getCliente() instanceof PessoaFisica){
             PessoaFisica pessoaFisica = (PessoaFisica) this.contaCorrente.getCliente();
             if(pessoaFisica.getSalario() <= 10000){
-                throw new RuntimeException("Número de parcelas é inválido!");     
+                throw new NumeroParcelasException();     
             }
         }       
     }
